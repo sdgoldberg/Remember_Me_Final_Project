@@ -19,5 +19,8 @@ public interface ContactListADT <T extends Comparable<T>>{
 
     // Returns the number of elements in the data structure
     int size();
+    
+   //return the contact at the given index
+    T get(int index);
 
 }

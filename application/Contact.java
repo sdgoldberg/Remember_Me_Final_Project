@@ -237,7 +237,12 @@ public Contact(String name, String phoneNumber, String dob, ArrayList<Contact> f
 			return -1;
 		}else if(this.getName().compareTo(other.getName()) > 0) {
 			return 1;
-		}else {
+		}else if(this.getPhoneNumber().compareTo(other.getPhoneNumber()) < 0) {
+			return -1;
+		}else if(this.getPhoneNumber().compareTo(other.getPhoneNumber()) > 0) {
+			return 1;
+		}
+		else {
 			int thisRel = 4;
 			int otherRel = 4;
 			Boolean found = false;
@@ -262,16 +267,16 @@ public Contact(String name, String phoneNumber, String dob, ArrayList<Contact> f
 			}else if(thisRel ==4 && otherRel !=4) {
 				return 1;
 			}else if (thisRel == 4 && otherRel == 4){
-				return -1;
+				return 0;
 			}else {
 				if(this.getCloseFriend() == true && other.getCloseFriend() == true) {
-					return -1;
-				}else if (this.getCloseFriend() ==true && other.getCloseFriend() != true){
+					return 0;
+				}else if (this.getCloseFriend() == true && other.getCloseFriend() != true){
 					return -1;
 				}else if (this.getCloseFriend() != true && other.getCloseFriend() == true) {
 					return 1;
 				}else {
-					return -1;
+					return 0;
 				}
 			}
 		}

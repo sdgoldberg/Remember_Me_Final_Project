@@ -71,9 +71,11 @@ public class ContactList implements ContactListADT<Contact> {
 	}
 
 	/**
-	 * inserts the contact into the ContactList 
-	 * @param addition- the Contact to be inserted
-	 * throws an IllegalArgumentException if addition == null or if Contact is already in the list
+	 * inserts the contact into the ContactList
+	 * 
+	 * @param addition- the Contact to be inserted throws an
+	 *                  IllegalArgumentException if addition == null or if Contact
+	 *                  is already in the list
 	 * 
 	 */
 	@Override
@@ -106,10 +108,18 @@ public class ContactList implements ContactListADT<Contact> {
 						size++;
 						inserted = true;
 					} else {
-						if (!current.hasNext()) {
+					if(current == root) {
+						newNode.setNext(current);
+						root = newNode;
+						current.setPrevious(newNode);
+						size++;
+						inserted = true;
+					}
+						else if (!current.hasNext()) {
 							current.setNext(newNode);
 							newNode.setPrevious(current);
 							size++;
+							inserted = true;
 						} else {
 							current = current.getNext();
 							i++;
@@ -185,19 +195,40 @@ public class ContactList implements ContactListADT<Contact> {
 	@Override
 	public boolean contains(Contact con) {
 		int index = this.getIndex(con);
-		if(index == -1) {
+		if (index == -1) {
 			return false;
-		}else {
+		} else {
 			return true;
 		}
 	}
-/**
- * 
- * @return the size of this ContactList
- */
+
+	/**
+	 * 
+	 * @return the size of this ContactList
+	 */
 	@Override
 	public int size() {
 		return size;
+	}
+
+	@Override
+	public Contact get(int index) {
+		if (size == 0 || index >= size) {
+			throw new IndexOutOfBoundsException("index is out of bounds");
+		} else {
+			ContactNode current = root;
+			int i = 0;
+			while (i < index) {
+				current = current.getNext();
+			}
+			return current.getPerson();
+		}
+	}
+	
+	public void print() {
+		for(int i = 0; i < size; i++) {
+			System.out.println(get(i).getName());
+		}
 	}
 
 }
