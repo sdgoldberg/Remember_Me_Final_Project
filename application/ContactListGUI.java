@@ -30,27 +30,29 @@ private static final String APP_TITLE = "Remember Me?";
 //main Scene with ContactShallow list
 	//BorderPane is the main layout of the mainScene
 	BorderPane root = new BorderPane();
-	String picURL = getClass().getResource("defaultPic.png").toExternalForm();
+	String picURL = "defaultPic.png";
 	int personNumber = 0;
 
-  // for(int i = 0; i < 5; i++) {
-	//   contacts.insert(new Contact("John Doe " + personNumber, "000-000-0000", picURL));
-	//   contacts.print();
-	//   personNumber++;
-  // }
+  
+	for(int i = 0; i < 25; i++) {
+		System.out.println("John Doe " + i);
+      contacts.insert(new Contact("John Doe " + i, "000-000-0000", picURL));
+	  contacts.print();
+	   personNumber++;
+   }
    VBox rows = new VBox();
    HBox columns;
    
    
  int index = 0;
-	while(index < 3) {
+	while(index < contacts.size()) {
 		columns = new HBox();
 	for(int i = 0; i < 5; i++) {
-		ContactShallow lay = new ContactShallow(new Contact("John Doe ", "000-000-0000", picURL));
+		ContactShallow lay = new ContactShallow(contacts.get(index));
 		columns.getChildren().add(lay);
+		index++;
 	}
 	rows.getChildren().add(columns);
-	index++;
 	}
 	
 	//Set the Buttons on the bottom of the screen

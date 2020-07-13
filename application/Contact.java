@@ -18,13 +18,28 @@ private	String origin; // String that represents where this person is from
 private	String notes; // String that takes any other notes on this person
 private String[] relationships;
 
+public Contact (String name, String phoneNumber) {
+	this.name = name;
+	this.phoneNumber = phoneNumber;
+	this.dob = "";
+	this.friends = new ArrayList<>();
+	this.mutualFriends = new ArrayList<>();
+	this.photoURL = getClass().getResource("defaultPic.png").toExternalForm();
+	this.school = "";
+	this.major = "";
+	this.work = "";
+	this.closeFriend = false;
+	this.relationship = "";
+	relationships = new String[]{"family","friends", "aquaintance", "mutualFriend"};
+}
+
 public Contact(String name, String phoneNumber, String photoURL) {
 	this.name = name;
 	this.phoneNumber = phoneNumber;
 	this.dob = "";
 	this.friends = new ArrayList<>();
 	this.mutualFriends = new ArrayList<>();
-	this.photoURL = photoURL;
+	this.photoURL = getClass().getResource(photoURL).toExternalForm();
 	this.school = "";
 	this.major = "";
 	this.work = "";
@@ -40,7 +55,7 @@ public Contact(String name, String phoneNumber, String dob, ArrayList<Contact> f
 		this.dob = dob;
 		this.friends = friends;
 		this.mutualFriends = mutualFriends;
-		this.photoURL = photoURL;
+		this.photoURL = getClass().getResource(photoURL).toExternalForm();
 		this.school = school;
 		this.major = major;
 		this.work = work;

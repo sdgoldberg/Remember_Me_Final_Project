@@ -92,30 +92,35 @@ public class ContactList implements ContactListADT<Contact> {
 				boolean inserted = false;
 				int i = 0;
 				while (i < size && inserted == false) {
-					if (current.getPerson().equals(addition)) {
-						throw new IllegalArgumentException(
-								"Person is already in this Contact List: cannot add duplicates");
-					} else if ((current.getPerson()).compareTo(addition) > 0) {
+						if ((current.getPerson()).compareTo(addition) > 0) {
+							if(current == root) {
+								newNode.setNext(current);
+								root = newNode;
+								current.setPrevious(newNode);
+								size++;
+								inserted = true;
+							}else {
 						current.getPrevious().setNext(newNode);
 						newNode.setNext(current);
 						current.setPrevious(newNode);
 						size++;
-						inserted = true;
+						inserted = true;}
 					} else if (current.getPerson().compareTo(addition) == 0) {
+						if(current.hasNext()) {
 						current.getNext().setPrevious(newNode);
 						newNode.setPrevious(current);
 						current.setNext(newNode);
 						size++;
-						inserted = true;
+						inserted = true;}
+						else {
+							current.setNext(newNode);
+							newNode.setPrevious(current);
+							size++;
+							inserted = true;
+						}
+						
 					} else {
-					if(current == root) {
-						newNode.setNext(current);
-						root = newNode;
-						current.setPrevious(newNode);
-						size++;
-						inserted = true;
-					}
-						else if (!current.hasNext()) {
+							if (!current.hasNext()) {
 							current.setNext(newNode);
 							newNode.setPrevious(current);
 							size++;
@@ -218,7 +223,7 @@ public class ContactList implements ContactListADT<Contact> {
 		} else {
 			ContactNode current = root;
 			int i = 0;
-			while (i < index) {
+			while (i < index && current.hasNext()) {
 				current = current.getNext();
 			}
 			return current.getPerson();
