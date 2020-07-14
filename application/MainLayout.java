@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -19,13 +21,13 @@ File file;
 Scanner scan;
 ContactList contacts = new ContactList();
 
-public MainLayout() throws FileNotFoundException {
-	File file = new File("input.txt");
+public MainLayout(String filename) throws FileNotFoundException {
+	File file = new File(filename);
 	scan = new Scanner(file);
 //insert contacts from file into the list
 	int count = 1;
 	while(scan.hasNextLine()) {
-		String infoStr = scan.nextLine();
+		String infoStr = "" + scan.nextLine();
 		String[] info = infoStr.split(",");
 		Contact newContact = new Contact(info[1] +" " + info[0], info[2]);
 		contacts.insert(newContact);
@@ -40,7 +42,7 @@ public MainLayout() throws FileNotFoundException {
 	while(index < contacts.size()) {
 		columns = new HBox();
 		int i = 0;
-		while(i <5 && index < contacts.size()){
+		while(i <4 && index < contacts.size()){
 		ContactShallow lay = new ContactShallow(contacts.get(index));
 		columns.getChildren().add(lay);
 		index++;
@@ -53,14 +55,29 @@ public MainLayout() throws FileNotFoundException {
 		Button add = new Button("Add Contact");
 		Button remove = new Button("Remove Contact");
 		Button close = new Button("Close");
+		ComboBox filterBy = new ComboBox();
+		Label filterLabel = new Label("Filter By");
+		filterBy.getItems().addAll("Favorites", "Family", "Recent");
 		HBox buttons = new HBox(10);
-		buttons.getChildren().addAll(add, remove, close);
+		buttons.getChildren().addAll(add, remove, close, filterLabel, filterBy);
 		this.setBottom(buttons);
 		this.setCenter(rows);
 		Label header = new Label("Contacts");
 		header.setFont(new Font("Arial", 40));
 		this.setTop(header);
 		this.setAlignment(header, Pos.TOP_CENTER);
+		Label recents = new Label("Recents");
+		recents.setFont(new Font("Times New Roman", 30));
+		this.setMargin(recents, new Insets(10));
+		this.setLeft(recents);
+		this.setAlignment(recents, Pos.TOP_LEFT);
+		VBox fileDirect = new VBox(10);
+		Label currentFile = new Label("Current File: " + filename);
+		Button changeFile = new Button("Select a Different Contact File");
+		fileDirect.getChildren().addAll(currentFile, changeFile);
+		this.setRight(fileDirect);
+		
+		
 
 }
 }

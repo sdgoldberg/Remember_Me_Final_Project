@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 
 public class ContactListGUI extends Application {
 ContactList contacts = new ContactList();
-private static final int WINDOW_WIDTH = 1000;
+private static final int WINDOW_WIDTH = 1100;
 private static final int WINDOW_HEIGHT = 600;
 private static final String APP_TITLE = "Remember Me?";
 
@@ -102,8 +102,7 @@ private class EnterHandler implements EventHandler<ActionEvent>{
 		fileError.setVisible(false);
 		filename = fileInput.getText();
 		try {
-		File file = new File(filename);
-		mainLayout = new MainLayout();
+		mainLayout = new MainLayout(filename);
 		}catch (FileNotFoundException e1){
 			fileError.setVisible(true);
 		}
