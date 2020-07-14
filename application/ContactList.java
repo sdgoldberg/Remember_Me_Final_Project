@@ -92,7 +92,9 @@ public class ContactList implements ContactListADT<Contact> {
 				boolean inserted = false;
 				int i = 0;
 				while (i < size && inserted == false) {
-						if ((current.getPerson()).compareTo(addition) > 0) {
+				//if new node should come before the current node
+					if ((current.getPerson()).compareTo(addition) > 0) {
+						//if current is the root
 							if(current == root) {
 								newNode.setNext(current);
 								root = newNode;
@@ -102,13 +104,16 @@ public class ContactList implements ContactListADT<Contact> {
 							}else {
 						current.getPrevious().setNext(newNode);
 						newNode.setNext(current);
+						newNode.setPrevious(current.getPrevious());
 						current.setPrevious(newNode);
 						size++;
-						inserted = true;}
+						inserted = true;
+}
 					} else if (current.getPerson().compareTo(addition) == 0) {
 						if(current.hasNext()) {
 						current.getNext().setPrevious(newNode);
 						newNode.setPrevious(current);
+						newNode.setNext(current.getNext());
 						current.setNext(newNode);
 						size++;
 						inserted = true;}
@@ -223,8 +228,9 @@ public class ContactList implements ContactListADT<Contact> {
 		} else {
 			ContactNode current = root;
 			int i = 0;
-			while (i < index && current.hasNext()) {
+			while (i <= index && current.hasNext()) {
 				current = current.getNext();
+				i++;
 			}
 			return current.getPerson();
 		}
@@ -232,7 +238,8 @@ public class ContactList implements ContactListADT<Contact> {
 	
 	public void print() {
 		for(int i = 0; i < size; i++) {
-			System.out.println(get(i).getName());
+			System.out.print(get(i).getName() + ", ");
+			System.out.println();
 		}
 	}
 

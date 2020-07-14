@@ -1,8 +1,13 @@
 package application;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -25,55 +31,59 @@ private static final int WINDOW_WIDTH = 1000;
 private static final int WINDOW_HEIGHT = 600;
 private static final String APP_TITLE = "Remember Me?";
 
+//Scenes
+Scene fileScene;
+Scene mainScene;
+//Labels
+Label fileError = new Label("File could not be found, please enter a diffeent file name");
+//TextFields
+TextField fileInput;
+//Strings
+String filename;
+//Layouts
+MainLayout mainLayout;
+BorderPane mainFileLayout;
+ScrollPane scroll;
+//Stages
+Stage primary;
 	@Override
 	public void start(Stage pStage) throws Exception {
+		primary = pStage;
+//////////////////////////////////
+//File Input Scene
+/////////////////////////////////
+mainFileLayout = new BorderPane();
+HBox filePrompt = new HBox(8);
+VBox directions = new VBox(8);
+Label directionsLabel = new Label("Directions");
+Label instructions = new Label("  Please enter the name of your input file below. The input file Should be a text file with the following CSV Format"
+		+ "\n  Last Name, First Name, Phone Number. \n  Please click Enter after typing the file name to see your contact list.");
+directionsLabel.setFont(new Font("Times New Roman", 20));
+instructions.setFont(new Font("Times New Roman", 15));
+directions.getChildren().addAll(directionsLabel, instructions);
+Label fileLabel = new Label("Input File Name Here (must be a CSV file)");
+fileLabel.setFont(new Font("Times New Roman", 20));
+fileInput = new TextField("input.txt");
+
+filePrompt.getChildren().addAll(fileLabel, fileInput);
+mainFileLayout.setTop(directions);
+mainFileLayout.setCenter(filePrompt);
+mainFileLayout.setAlignment(directions, Pos.TOP_CENTER);
+mainFileLayout.setAlignment(filePrompt, Pos.CENTER);
+Button enter = new Button("Enter");
+EnterHandler eh = new EnterHandler();
+enter.setOnAction(eh);
+filePrompt.getChildren().add(enter);
+mainFileLayout.setBottom(fileError);
+fileError.setVisible(false);
+fileScene = new Scene(mainFileLayout, 800, 200);
+/////////////////////////////////////////////
 //main Scene with ContactShallow list
+////////////////////////////////////////////
 	//BorderPane is the main layout of the mainScene
-	BorderPane root = new BorderPane();
-	String picURL = "defaultPic.png";
-	int personNumber = 0;
-
-  
-	for(int i = 0; i < 25; i++) {
-		System.out.println("John Doe " + i);
-      contacts.insert(new Contact("John Doe " + i, "000-000-0000", picURL));
-	  contacts.print();
-	   personNumber++;
-   }
-   VBox rows = new VBox();
-   HBox columns;
-   
-   
- int index = 0;
-	while(index < contacts.size()) {
-		columns = new HBox();
-	for(int i = 0; i < 5; i++) {
-		ContactShallow lay = new ContactShallow(contacts.get(index));
-		columns.getChildren().add(lay);
-		index++;
-	}
-	rows.getChildren().add(columns);
-	}
-	
-	//Set the Buttons on the bottom of the screen
-	Button add = new Button("Add Contact");
-	Button remove = new Button("Remove Contact");
-	Button close = new Button("Close");
-	HBox buttons = new HBox(10);
-	buttons.getChildren().addAll(add, remove, close);
-	root.setBottom(buttons);
-	root.setCenter(rows);
-	Label header = new Label("Contacts");
-	header.setFont(new Font("Arial", 40));
-	root.setTop(header);
-	root.setAlignment(header, Pos.TOP_CENTER);
-	ScrollPane scroll = new ScrollPane(root);
-	Scene mainScene = new Scene(scroll, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-	
 	
 	pStage.setTitle(APP_TITLE);
-	pStage.setScene(mainScene);
+	pStage.setScene(fileScene);
 	pStage.show();
 	}
 
@@ -81,5 +91,27 @@ private static final String APP_TITLE = "Remember Me?";
 		// TODO Auto-generated method stub
 launch(args);
 	}
+private class EnterHandler implements EventHandler<ActionEvent>{
 
+/*	Stage s;
+	private EnterHandler(Stage s) {
+		this.s = s;
+	}*/
+	@Override
+	public void handle(ActionEvent e) {
+		fileError.setVisible(false);
+		filename = fileInput.getText();
+		try {
+		File file = new File(filename);
+		mainLayout = new MainLayout();
+		}catch (FileNotFoundException e1){
+			fileError.setVisible(true);
+		}
+		scroll = new ScrollPane(mainLayout);
+		mainScene = new Scene(scroll, WINDOW_WIDTH,WINDOW_HEIGHT);
+		primary.setScene(mainScene);
+		primary.show();
+	}
+	
+}
 }
