@@ -1,3 +1,14 @@
+//////////////// FILE HEADER//////////////////////////////////////////////
+//
+// Title: HelloFX
+// Files:  MainLayout.java, ContactListGUI.java, ContactListADT.java,ContactListTest.java, ContactShallow.java, MainLayout.java, TestInputTxt.java
+// Course:  CS 400, Summer, 2020
+// Lecture: 002
+// Author:  Sam Goldberg
+// Email:   sdgoldberg@wisc.edu
+// Lecturer's Name: Florian Heimerl
+//
+//////////////////////////////////////////////////////////////////////////////
 package application;
 
 import java.util.ArrayList;
@@ -39,7 +50,7 @@ public Contact(String name, String phoneNumber, String photoURL) {
 	this.dob = "";
 	this.friends = new ArrayList<>();
 	this.mutualFriends = new ArrayList<>();
-	this.photoURL = getClass().getResource(photoURL).toExternalForm();
+		this.photoURL = getClass().getResource(photoURL).toExternalForm();
 	this.school = "";
 	this.major = "";
 	this.work = "";

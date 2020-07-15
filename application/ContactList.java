@@ -1,3 +1,14 @@
+//////////////// FILE HEADER//////////////////////////////////////////////
+//
+// Title: HelloFX
+// Files:  MainLayout.java, ContactListGUI.java, ContactListADT.java,ContactListTest.java, ContactShallow.java, MainLayout.java, TestInputTxt.java
+// Course:  CS 400, Summer, 2020
+// Lecture: 002
+// Author:  Sam Goldberg
+// Email:   sdgoldberg@wisc.edu
+// Lecturer's Name: Florian Heimerl
+//
+//////////////////////////////////////////////////////////////////////////////
 package application;
 
 import java.util.ArrayList;
@@ -92,40 +103,40 @@ public class ContactList implements ContactListADT<Contact> {
 				boolean inserted = false;
 				int i = 0;
 				while (i < size && inserted == false) {
-				//if new node should come before the current node
+					// if new node should come before the current node
 					if ((current.getPerson()).compareTo(addition) > 0) {
-						//if current is the root
-							if(current == root) {
-								newNode.setNext(current);
-								root = newNode;
-								current.setPrevious(newNode);
-								size++;
-								inserted = true;
-							}else {
-						current.getPrevious().setNext(newNode);
-						newNode.setNext(current);
-						newNode.setPrevious(current.getPrevious());
-						current.setPrevious(newNode);
-						size++;
-						inserted = true;
-}
+						// if current is the root
+						if (current == root) {
+							newNode.setNext(current);
+							root = newNode;
+							current.setPrevious(newNode);
+							size++;
+							inserted = true;
+						} else {
+							current.getPrevious().setNext(newNode);
+							newNode.setNext(current);
+							newNode.setPrevious(current.getPrevious());
+							current.setPrevious(newNode);
+							size++;
+							inserted = true;
+						}
 					} else if (current.getPerson().compareTo(addition) == 0) {
-						if(current.hasNext()) {
-						current.getNext().setPrevious(newNode);
-						newNode.setPrevious(current);
-						newNode.setNext(current.getNext());
-						current.setNext(newNode);
-						size++;
-						inserted = true;}
-						else {
+						if (current.hasNext()) {
+							current.getNext().setPrevious(newNode);
+							newNode.setPrevious(current);
+							newNode.setNext(current.getNext());
+							current.setNext(newNode);
+							size++;
+							inserted = true;
+						} else {
 							current.setNext(newNode);
 							newNode.setPrevious(current);
 							size++;
 							inserted = true;
 						}
-						
+
 					} else {
-							if (!current.hasNext()) {
+						if (!current.hasNext()) {
 							current.setNext(newNode);
 							newNode.setPrevious(current);
 							size++;
@@ -235,9 +246,9 @@ public class ContactList implements ContactListADT<Contact> {
 			return current.getPerson();
 		}
 	}
-	
+
 	public void print() {
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			System.out.print(get(i).getName() + ", ");
 			System.out.println();
 		}
