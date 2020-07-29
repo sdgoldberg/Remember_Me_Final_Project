@@ -19,6 +19,7 @@ import java.util.Scanner;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -27,8 +28,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -77,7 +82,6 @@ public class ContactListGUI extends Application {
 		Label fileLabel = new Label("Input File Name Here (must be a CSV file)");
 		fileLabel.setFont(new Font("Times New Roman", 20));
 		fileInput = new TextField("input.txt");
-
 		filePrompt.getChildren().addAll(fileLabel, fileInput);
 		mainFileLayout.setTop(directions);
 		mainFileLayout.setCenter(filePrompt);
@@ -89,7 +93,9 @@ public class ContactListGUI extends Application {
 		filePrompt.getChildren().add(enter);
 		mainFileLayout.setBottom(fileError);
 		fileError.setVisible(false);
+		mainFileLayout.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 		fileScene = new Scene(mainFileLayout, 800, 200);
+		
 /////////////////////////////////////////////
 //main Scene with ContactShallow list
 ////////////////////////////////////////////
