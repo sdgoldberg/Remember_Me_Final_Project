@@ -121,11 +121,12 @@ public class ContactListGUI extends Application {
 			fileError.setVisible(false);
 			filename = fileInput.getText();
 			try {
-				mainLayout = new MainLayout(filename);
+				mainLayout = new MainLayout(filename, primary);
 			} catch (FileNotFoundException e1) {
 				fileError.setVisible(true);
 			}
 			scroll = new ScrollPane(mainLayout);
+			scroll.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 			mainScene = new Scene(scroll, WINDOW_WIDTH, WINDOW_HEIGHT);
 			primary.setScene(mainScene);
 			primary.show();

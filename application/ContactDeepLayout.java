@@ -1,84 +1,93 @@
-//////////////// FILE HEADER//////////////////////////////////////////////
-//
-// Title: HelloFX
-// Files:  MainLayout.java, ContactListGUI.java, ContactListADT.java,ContactListTest.java, ContactShallow.java, MainLayout.java, TestInputTxt.java
-// Course:  CS 400, Summer, 2020
-// Lecture: 002
-// Author:  Sam Goldberg
-// Email:   sdgoldberg@wisc.edu
-// Lecturer's Name: Florian Heimerl
-//
-//////////////////////////////////////////////////////////////////////////////
 package application;
 
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
-public class ContactShallow extends Pane {
+public class ContactDeepLayout extends BorderPane{
 	private Contact person;
 	private Image star;
 	private MainLayout mainlayout;
-	/**
-	 * @return the mainlayout
-	 */
-	public MainLayout getMainlayout() {
-		return mainlayout;
-	}
-
-	/**
-	 * @param mainlayout the mainlayout to set
-	 */
-	public void setMainlayout(MainLayout mainlayout) {
-		this.mainlayout = mainlayout;
-	}
-
+  //ImageView
 	private ImageView starImage = new ImageView();
+	//layout
 	private HBox h;
 	private VBox v;
+	private MainLayout mainLayout;
+	private BorderPane bor;
+	//Images
+	private Image filledStar = new Image(getClass().getResource("goldStarFilled.png").toExternalForm());
+	private Image unfilledStar = new Image(getClass().getResource("starUnfilled.png").toExternalForm());
 	private Image picture;
 	private ImageView profilePic;
+	//Labels
 	private Label name;
 	private Label phoneNumber;
 	private Label dob;
-	private Image filledStar = new Image(getClass().getResource("goldStarFilled.png").toExternalForm());
-	private Image unfilledStar = new Image(getClass().getResource("starUnfilled.png").toExternalForm());
+	private Label school;
+	private Label major;
+	private Label work;
+	private Label relationship;
+	private Label origin;
+	private Label notes;
+
+	//EventHandlers
 	private StarHandler change;
 	
-	public ContactShallow(Contact p, MainLayout l) {
+	public ContactDeepLayout(Contact p, MainLayout l) {
 		person = p;
-		mainlayout = l;
-//create orderPane layout
-		BorderPane bor = new BorderPane();
+		mainLayout = l;
 //create a new VBox to format the ShallowContact	
 		v = new VBox();
 //insert profile picture into layout
 		picture = new Image(person.getPhotoURL());
 		profilePic = new ImageView(picture);
-		profilePic.setFitWidth(100);
+		profilePic.setFitWidth(300);
 		profilePic.setPreserveRatio(true);
 		profilePic.setSmooth(true);
 		profilePic.setCache(true);
 		v.getChildren().add(profilePic);
-
+		
 		name = new Label("Name: " + person.getName());
+		name.setFont(new Font("Times New Roman", 40));
 		phoneNumber = new Label("Phone: " + person.getPhoneNumber());
+		phoneNumber.setFont(new Font("Times New Roman", 40));
 		dob = new Label("Date of Birth: " + person.getDob());
-		v.getChildren().addAll(name, phoneNumber, dob);
+		dob.setFont(new Font("Times New Roman", 40));
+		school = new Label("School: " + person.getSchool());
+		school.setFont(new Font("Times New Roman", 40));
+		major = new Label("Major: " + person.getMajor());
+		major.setFont(new Font("Times New Roman", 40));
+		work = new Label ("Work: " + person.getWork());
+		work.setFont(new Font("Times New Roman", 40));
+		relationship = new Label("Relationship: " + person.getRelationship());
+		relationship.setFont(new Font("Times New Roman", 40));
+		origin = new Label("From: " + person.getOrigin());
+		origin.setFont(new Font("Times New Roman", 40));
+		notes = new Label("Notes: " + person.getNotes());
+		notes.setFont(new Font("Times New Roman", 40));
+		
+		v.getChildren().addAll(name, phoneNumber, dob, school, major, work, relationship, origin, notes);
 		if (person.getCloseFriend()) {
 			starImage.setImage(filledStar);
 		} else {
 			starImage.setImage(unfilledStar);
 		}
-		starImage.setFitWidth(40);
+		bor = new BorderPane();
+		starImage.setFitWidth(100);
 		starImage.setPreserveRatio(true);
 		starImage.setSmooth(true);
 		starImage.setCache(true);
@@ -86,7 +95,9 @@ public class ContactShallow extends Pane {
 		starImage.setOnMouseClicked(change);
 		bor.setLeft(starImage);
 		bor.setCenter(v);
-		this.getChildren().add(bor);
+		this.setLeft(mainLayout.getRecent());
+		this.setCenter(bor);
+		this.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 	}
 
 	/**
@@ -170,6 +181,20 @@ public class ContactShallow extends Pane {
 		this.dob = dob;
 	}
 
+	/**
+	 * @return the school
+	 */
+	public Label getSchool() {
+		return school;
+	}
+
+	/**
+	 * @param school the school to set
+	 */
+	public void setSchool(Label school) {
+		this.school = school;
+	}
+
 	private class StarHandler implements EventHandler<MouseEvent> {
 		ImageView star;
 
@@ -182,11 +207,11 @@ public class ContactShallow extends Pane {
 			if (star.getImage().equals(filledStar)) {
 				star.setImage(unfilledStar);
 				person.setCloseFriend(false);
-				mainlayout.getFavorites().remove(person);
+				mainLayout.getFavorites().remove(person);
 			} else {
 				star.setImage(filledStar);
 				person.setCloseFriend(true);
-				mainlayout.getFavorites().insert(person);
+				mainLayout.getFavorites().insert(person);
 			}
 
 		}
