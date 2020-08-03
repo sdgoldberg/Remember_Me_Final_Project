@@ -1,4 +1,4 @@
-Goldberg,Sam,‭(201) 815-6552‬
+Goldberg,Sam,‭(201) 815-6552‬,pic.png
 Samuels,Jonathon,(201) 677-9852
 Levy,Jack,(986) 455-5218
 Alper,Andrew,(555) 777-9852
@@ -14,3 +14,4 @@ Bale,Christain, (808) 099 5905
 Cruise,Tom,(707) 557 0999
 Musk,Elon,(010) 101 0101
 Edison,Thomas,(333) 303 3333
+Goldberg, Harrison, (201) 566 9852

@@ -161,22 +161,40 @@ public class ContactList implements ContactListADT<Contact> {
 	public boolean remove(Contact removeMe) {
 		if (size == 0) {
 			return false;
-		} else if (removeMe == null) {
+		}
+			
+		else if (removeMe == null) {
 			throw new IllegalArgumentException("null Contact");
 		} else {
 			ContactNode find = findNode(removeMe);
 			if (find != null) {
+				if(find != root && find.hasNext()) {
 				find.getPrevious().setNext(find.getNext());
 				find.getNext().setPrevious(find.getPrevious());
 				size--;
 				return true;
+				}else if(find != root && !find.hasNext()) {
+					find.getPrevious().setNext(null);
+					size--;
+					return true;
+				}else if(find == root) {
+					root = find.getNext();
+					find.getNext().setPrevious(null);
+					find.setNext(null);
+					size--;
+					return true;
+				}else {
+					root = null;
+					size--;
+					return true;
+				}
 			} else {
 				return false;
 			}
 		}
 	}
 
-	private ContactNode findNode(Contact find) {
+	public ContactNode findNode(Contact find) {
 		ContactNode current = root;
 		int i = 0;
 		while (i < size) {
@@ -245,6 +263,19 @@ public class ContactList implements ContactListADT<Contact> {
 			}
 			return current.getPerson();
 		}
+	}
+	public void remove_Duplicates() {
+		System.out.println("Starting Duplicate removal");
+		for(int i = 0; i < this.size(); i++) {
+			for(int j = i+1; j < this.size(); j++){
+				Contact other = this.get(j);
+				if(this.get(i).equals(other)){
+					this.remove(other);
+					System.out.println("Other name: " + other.getName());
+				}
+			}
+		}
+		System.out.println("Ending Duplicate removal");
 	}
 
 	public void print() {

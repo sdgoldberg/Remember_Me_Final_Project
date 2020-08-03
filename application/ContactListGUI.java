@@ -39,6 +39,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class ContactListGUI extends Application {
@@ -46,7 +47,6 @@ public class ContactListGUI extends Application {
 	private static final int WINDOW_WIDTH = 1200;
 	private static final int WINDOW_HEIGHT = 700;
 	private static final String APP_TITLE = "Remember Me?";
-
 //Scenes
 	Scene fileScene;
 	Scene mainScene;
@@ -105,6 +105,7 @@ public class ContactListGUI extends Application {
 		pStage.setScene(fileScene);
 		pStage.show();
 	}
+
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

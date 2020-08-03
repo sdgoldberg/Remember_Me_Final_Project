@@ -27,19 +27,7 @@ public class ContactShallow extends Pane {
 	private Contact person;
 	private Image star;
 	private MainLayout mainlayout;
-	/**
-	 * @return the mainlayout
-	 */
-	public MainLayout getMainlayout() {
-		return mainlayout;
-	}
 
-	/**
-	 * @param mainlayout the mainlayout to set
-	 */
-	public void setMainlayout(MainLayout mainlayout) {
-		this.mainlayout = mainlayout;
-	}
 
 	private ImageView starImage = new ImageView();
 	private HBox h;
@@ -88,7 +76,19 @@ public class ContactShallow extends Pane {
 		bor.setCenter(v);
 		this.getChildren().add(bor);
 	}
+	/**
+	 * @return the mainlayout
+	 */
+	public MainLayout getMainlayout() {
+		return mainlayout;
+	}
 
+	/**
+	 * @param mainlayout the mainlayout to set
+	 */
+	public void setMainlayout(MainLayout mainlayout) {
+		this.mainlayout = mainlayout;
+	}
 	/**
 	 * @return the person
 	 */
@@ -182,11 +182,12 @@ public class ContactShallow extends Pane {
 			if (star.getImage().equals(filledStar)) {
 				star.setImage(unfilledStar);
 				person.setCloseFriend(false);
-				mainlayout.getFavorites().remove(person);
+				getMainlayout().getFavorites().remove(person);
 			} else {
 				star.setImage(filledStar);
 				person.setCloseFriend(true);
-				mainlayout.getFavorites().insert(person);
+				System.out.println(getMainlayout().getFavorites());
+				getMainlayout().getFavorites().insert(person);
 			}
 
 		}
