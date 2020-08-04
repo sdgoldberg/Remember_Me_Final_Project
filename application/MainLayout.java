@@ -17,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
+
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -37,7 +39,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class MainLayout extends BorderPane {
+public class MainLayout extends ScrollPane {
 	private String fileName;
 	private File file;
 	private Stage pStage;
@@ -64,15 +66,17 @@ public class MainLayout extends BorderPane {
 	private ComboBox<String> filterBy;
 	// Hbox
 	private HBox buttons;
-
+	//BorderPane
+	BorderPane mainPane;
 	private Scene contactDeep;
 
 	public MainLayout(String filename, Stage stage) throws FileNotFoundException {
 		this.fileName = filename;
 		System.out.println("fileName: " + fileName);
-		contacts = new ContactList();
-		recentsList = new ContactList();
-		favorites = new ContactList();
+		contacts = LayoutManage.getContacts();
+		recentsList = LayoutManage.getRecentsList();
+		favorites = LayoutManage.getFavorites();
+		mainPane = new BorderPane();
 		File file = new File(filename);
 		pStage = stage;
 		scan = new Scanner(file);
@@ -99,13 +103,14 @@ public class MainLayout extends BorderPane {
 		recents.setFont(new Font("Times New Roman", 30));
 		recent.setMargin(recents, new Insets(20));
 		recent.getChildren().add(recents);
-		this.setAlignment(recents, Pos.TOP_LEFT);
+		mainPane.setAlignment(recents, Pos.TOP_LEFT);
 		recentScroll = new ScrollPane(recent);
+		recentScroll.setContent(recent);
 		recentScroll.setVisible(true);
 		recentScroll.setPannable(true);
 		recentScroll.setFitToHeight(true);
 		recentScroll.setFitToWidth(true);
-		this.setLeft(recentScroll);
+		mainPane.setLeft(recentScroll);
 		// create contact shallow objects from contact list
 		VBox rows = new VBox();
 		HBox columns;
@@ -127,25 +132,30 @@ public class MainLayout extends BorderPane {
 		add = new Button("Add Contact");
 		remove = new Button("Remove Contact");
 		close = new Button("Close Application");
+		CloseHandler ch = new CloseHandler();
+		close.setOnAction(ch);
 		filterBy = new ComboBox<String>();
 		filterLabel = new Label("Filter By");
-		filterBy.getItems().addAll("Favorites", "Family", "Recent");
+		filterBy.getItems().addAll("All", "Favorites", "Family", "Recent");
+		
 		buttons = new HBox(10);
 		buttons.getChildren().addAll(add, remove, close, filterLabel, filterBy);
-		this.setBottom(buttons);
-		this.setCenter(rows);
+		mainPane.setBottom(buttons);
+		mainPane.setCenter(rows);
 		// Set the header of this scene
 		Label header = new Label("Contacts");
 		header.setFont(new Font("Arial", 40));
-		this.setTop(header);
-		this.setAlignment(header, Pos.TOP_CENTER);
+		mainPane.setTop(header);
+		mainPane.setAlignment(header, Pos.TOP_CENTER);
 		//set the file information labels on right
 		fileDirect = new VBox(10);
 		currentFile = new Label("Current File: " + fileName);
 		changeFile = new Button("Select a Different Contact File");
 		fileDirect.getChildren().addAll(currentFile, changeFile);
 		fileDirect.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
-		this.setRight(fileDirect);
+		mainPane.setRight(fileDirect);
+		this.setContent(mainPane);
+		mainPane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 		this.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 	}
 
@@ -162,24 +172,26 @@ public class MainLayout extends BorderPane {
 		public void handle(MouseEvent e) {
 			contactDeep = new Scene(new ContactDeepLayout(contact.getPerson(), layout, fileName, pStage), pStage.getWidth(),
 					pStage.getHeight());
-			if(recentsList.contains(contact.getPerson())) {
-				recentsList.remove(contact.getPerson());
-				recentsList.insert(contact.getPerson());
-				ContactShallow newShallow = new ContactShallow(contact.getPerson(), contact.getMainlayout());
-				recent.getChildren().add(1, newShallow);
-			}else {
+
 			recentsList.insert(contact.getPerson());
 			ContactShallow newShallow = new ContactShallow(contact.getPerson(), contact.getMainlayout());
 			recent.getChildren().add(1, newShallow);
-			
-			}
 			pStage.setScene(contactDeep);
 
 
 		}
 
 	}
+private class CloseHandler implements EventHandler<ActionEvent>{
 
+	@Override
+	public void handle(ActionEvent arg0) {
+		pStage.close();
+		
+	}
+	
+}
+	
 	/**
 	 * @return the file
 	 */

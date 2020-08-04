@@ -81,6 +81,7 @@ public class ContactList implements ContactListADT<Contact> {
 		size = 1;
 	}
 
+
 	/**
 	 * inserts the contact into the ContactList
 	 * 
@@ -177,7 +178,7 @@ public class ContactList implements ContactListADT<Contact> {
 					find.getPrevious().setNext(null);
 					size--;
 					return true;
-				}else if(find == root) {
+				}else if(find == root && find.hasNext()) {
 					root = find.getNext();
 					find.getNext().setPrevious(null);
 					find.setNext(null);

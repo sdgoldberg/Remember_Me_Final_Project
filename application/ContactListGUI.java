@@ -126,10 +126,12 @@ public class ContactListGUI extends Application {
 			} catch (FileNotFoundException e1) {
 				fileError.setVisible(true);
 			}
-			scroll = new ScrollPane(mainLayout);
-			scroll.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
-			mainScene = new Scene(scroll, WINDOW_WIDTH, WINDOW_HEIGHT);
+			/*scroll = new ScrollPane(mainLayout);
+			scroll.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));*/
+			mainScene = new Scene(mainLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
 			primary.setScene(mainScene);
+			primary.centerOnScreen();
+			primary.setMaxHeight(WINDOW_HEIGHT);
 			primary.show();
 		}
 

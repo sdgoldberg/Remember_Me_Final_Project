@@ -3,6 +3,7 @@ package application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -33,18 +34,28 @@ public class ContactDeepLayout extends BorderPane{
 	private Stage stage;
 	private static final int WINDOW_WIDTH = 1200;
 	private static final int WINDOW_HEIGHT = 700;
+	//int
+	private static int lastRecent = -1;
   //ImageView
 	private ImageView starImage = new ImageView();
+   //ContactList
+	private ContactList contacts;
+	private static ContactList recentsList;
+	private ContactList favorites;
 	
 	//ScrollPane
-	ScrollPane scroll;
+	private ScrollPane scroll;
+	private ScrollPane recentScroll;
+	//VBox
+	private VBox recent;
 	//layout
 	private HBox h;
 	private VBox v;
 	private MainLayout mainLayout;
-	private BorderPane bor;
+	private HBox bor;
 	private HBox controls;
 	private VBox fileDirect;
+	
 	//Images
 	private Image filledStar = new Image(getClass().getResource("goldStarFilled.png").toExternalForm());
 	private Image unfilledStar = new Image(getClass().getResource("starUnfilled.png").toExternalForm());
@@ -61,6 +72,7 @@ public class ContactDeepLayout extends BorderPane{
 	private Label origin;
 	private Label notes;
 	private Label currentFile;
+	private Label recents;
 	//Buttons
 	Button back;
 	Button editContact;
@@ -72,6 +84,9 @@ public class ContactDeepLayout extends BorderPane{
 		person = p;
 		this.stage = stage;
 		mainLayout = l;
+		contacts = LayoutManage.getContacts();
+		recentsList = LayoutManage.getRecentsList();
+		favorites = LayoutManage.getFavorites();
 //create a new VBox to format the ShallowContact	
 		v = new VBox();
 //insert profile picture into layout
@@ -82,7 +97,6 @@ public class ContactDeepLayout extends BorderPane{
 		profilePic.setSmooth(true);
 		profilePic.setCache(true);
 		v.getChildren().add(profilePic);
-		
 		name = new Label("Name: " + person.getName());
 		name.setFont(new Font("Times New Roman", 30));
 		phoneNumber = new Label("Phone: " + person.getPhoneNumber());
@@ -103,23 +117,41 @@ public class ContactDeepLayout extends BorderPane{
 		notes.setFont(new Font("Times New Roman", 30));
 	
 		v.getChildren().addAll(name, phoneNumber, dob, school, major, work, relationship, origin, notes);
-		v.setBorder((new Border(new BorderStroke(Color.valueOf("#9E9E9E"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(10), Insets.EMPTY))));
 		if (person.getCloseFriend()) {
 			starImage.setImage(filledStar);
 		} else {
 			starImage.setImage(unfilledStar);
 		}
-		bor = new BorderPane();
+	
+		bor = new HBox(2);
 		starImage.setFitWidth(100);
 		starImage.setPreserveRatio(true);
 		starImage.setSmooth(true);
 		starImage.setCache(true);
 		change = new StarHandler(starImage);
 		starImage.setOnMouseClicked(change);
-		bor.setLeft(starImage);
-		bor.setCenter(v);
-		this.setLeft(mainLayout.getRecentScroll());
+		bor.getChildren().addAll(starImage, v);
 		this.setCenter(bor);
+		bor.setBorder((new Border(new BorderStroke(Color.valueOf("#9E9E9E"), BorderStrokeStyle.DOTTED, CornerRadii.EMPTY, new BorderWidths(2), Insets.EMPTY))));
+		// create a recents tab on the left
+		
+		recent = new VBox(8);
+		recents = new Label("      Recents           ");
+		recents.setFont(new Font("Times New Roman", 30));
+		recent.setMargin(recents, new Insets(20));
+		recent.getChildren().add(recents);
+		setAlignment(recents, Pos.TOP_LEFT);
+		System.out.println("recents size: " + recentsList.size());
+		for(int i = recentsList.size()-1; i > lastRecent; i--) {
+			ContactShallow newShallow = new ContactShallow(recentsList.get(i), mainLayout);
+			recent.getChildren().add(1, newShallow);
+		}
+		recentScroll = new ScrollPane(recent);
+		recentScroll.setVisible(true);
+		recentScroll.setPannable(false);
+		recentScroll.setFitToHeight(false);
+		recentScroll.setFitToWidth(false);
+		this.setLeft(recentScroll);
 		
 		//Add Control Buttons
 		controls = new HBox(10);
@@ -131,11 +163,12 @@ public class ContactDeepLayout extends BorderPane{
 		this.setBottom(controls);
 		
 		//add file information
-		currentFile = new Label("Current File: " + fileName);
+		currentFile = new Label("Current File: " + fileName + "     ");
 		currentFile.setFont(new Font("Times New Roman", 20));
 		fileDirect = new VBox(10);
 		fileDirect.getChildren().add(currentFile);
 		this.setRight(fileDirect);
+		fileDirect.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, new CornerRadii(0), Insets.EMPTY)));
 		this.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 	}
 
@@ -255,6 +288,7 @@ public class ContactDeepLayout extends BorderPane{
 				mainLayout.getFavorites().insert(person);
 				int index = mainLayout.getContacts().getIndex(person);
 				mainLayout.getContacts().get(index).setCloseFriend(true);
+				
 			}
 
 		}
@@ -267,7 +301,8 @@ public class ContactDeepLayout extends BorderPane{
 		}
 		@Override
 		public void handle(ActionEvent e) {
-			scroll = new ScrollPane(mainLayout);
+			MainLayout newMain = mainLayout;
+			scroll = new ScrollPane(newMain);
 			scroll.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 			Scene mainScene = new Scene(scroll, WINDOW_WIDTH, WINDOW_HEIGHT);
 			stage.setScene(mainScene);
