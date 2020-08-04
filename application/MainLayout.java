@@ -30,7 +30,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -39,7 +43,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class MainLayout extends ScrollPane {
+public class MainLayout extends BorderPane {
 	private String fileName;
 	private File file;
 	private Stage pStage;
@@ -62,12 +66,13 @@ public class MainLayout extends ScrollPane {
 	private VBox fileDirect;
 	// ScrollPane
 	private ScrollPane recentScroll;
+	private ScrollPane contactsScroll;
 	// ComboBox
 	private ComboBox<String> filterBy;
 	// Hbox
 	private HBox buttons;
-	//BorderPane
-	BorderPane mainPane;
+	// BorderPane
+	//BorderPane mainPane;
 	private Scene contactDeep;
 
 	public MainLayout(String filename, Stage stage) throws FileNotFoundException {
@@ -76,7 +81,7 @@ public class MainLayout extends ScrollPane {
 		contacts = LayoutManage.getContacts();
 		recentsList = LayoutManage.getRecentsList();
 		favorites = LayoutManage.getFavorites();
-		mainPane = new BorderPane();
+		//mainPane = new BorderPane();
 		File file = new File(filename);
 		pStage = stage;
 		scan = new Scanner(file);
@@ -86,31 +91,31 @@ public class MainLayout extends ScrollPane {
 			String infoStr = "" + scan.nextLine();
 			String[] info = infoStr.split(",");
 			Contact newContact = null;
-			if(info.length == 3) {
-			newContact = new Contact(info[1] + " " + info[0], info[2]);
-			}else if(info.length == 4) {
-			newContact = new Contact(info[1] + " " + info[0], info[2], info[3]);
+			if (info.length == 3) {
+				newContact = new Contact(info[1] + " " + info[0], info[2]);
+			} else if (info.length == 4) {
+				newContact = new Contact(info[1] + " " + info[0], info[2], info[3]);
 			}
 			contacts.insert(newContact);
 			System.out.print(count + " ");
 			contacts.print();
 			count++;
 		}
-		contacts.remove_Duplicates();
+		//contacts.remove_Duplicates();
 		// create a recents tab on the left
 		recent = new VBox(8);
 		recents = new Label("      Recents           ");
 		recents.setFont(new Font("Times New Roman", 30));
 		recent.setMargin(recents, new Insets(20));
 		recent.getChildren().add(recents);
-		mainPane.setAlignment(recents, Pos.TOP_LEFT);
+		this.setAlignment(recents, Pos.TOP_LEFT);
 		recentScroll = new ScrollPane(recent);
 		recentScroll.setContent(recent);
 		recentScroll.setVisible(true);
 		recentScroll.setPannable(true);
 		recentScroll.setFitToHeight(true);
 		recentScroll.setFitToWidth(true);
-		mainPane.setLeft(recentScroll);
+		this.setLeft(recentScroll);
 		// create contact shallow objects from contact list
 		VBox rows = new VBox();
 		HBox columns;
@@ -128,6 +133,9 @@ public class MainLayout extends ScrollPane {
 			}
 			rows.getChildren().add(columns);
 		}
+		contactsScroll = new ScrollPane(rows);
+		contactsScroll.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
+		contactsScroll.autosize();
 		// Set the Buttons on the bottom of the screen
 		add = new Button("Add Contact");
 		remove = new Button("Remove Contact");
@@ -137,25 +145,26 @@ public class MainLayout extends ScrollPane {
 		filterBy = new ComboBox<String>();
 		filterLabel = new Label("Filter By");
 		filterBy.getItems().addAll("All", "Favorites", "Family", "Recent");
-		
+
 		buttons = new HBox(10);
 		buttons.getChildren().addAll(add, remove, close, filterLabel, filterBy);
-		mainPane.setBottom(buttons);
-		mainPane.setCenter(rows);
+		this.setBottom(buttons);
+		this.setCenter(contactsScroll);
+		rows.setBorder((new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DOTTED, CornerRadii.EMPTY,
+				new BorderWidths(5), Insets.EMPTY))));
 		// Set the header of this scene
 		Label header = new Label("Contacts");
 		header.setFont(new Font("Arial", 40));
-		mainPane.setTop(header);
-		mainPane.setAlignment(header, Pos.TOP_CENTER);
-		//set the file information labels on right
+		this.setTop(header);
+		this.setAlignment(header, Pos.TOP_CENTER);
+		// set the file information labels on right
 		fileDirect = new VBox(10);
 		currentFile = new Label("Current File: " + fileName);
 		changeFile = new Button("Select a Different Contact File");
 		fileDirect.getChildren().addAll(currentFile, changeFile);
 		fileDirect.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
-		mainPane.setRight(fileDirect);
-		this.setContent(mainPane);
-		mainPane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
+		this.setRight(fileDirect);
+		this.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 		this.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 	}
 
@@ -170,28 +179,28 @@ public class MainLayout extends ScrollPane {
 
 		@Override
 		public void handle(MouseEvent e) {
-			contactDeep = new Scene(new ContactDeepLayout(contact.getPerson(), layout, fileName, pStage), pStage.getWidth(),
-					pStage.getHeight());
+			contactDeep = new Scene(new ContactDeepLayout(contact.getPerson(), layout, fileName, pStage),
+					pStage.getWidth(), pStage.getHeight());
 
 			recentsList.insert(contact.getPerson());
 			ContactShallow newShallow = new ContactShallow(contact.getPerson(), contact.getMainlayout());
 			recent.getChildren().add(1, newShallow);
 			pStage.setScene(contactDeep);
 
+		}
+
+	}
+
+	private class CloseHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			pStage.close();
 
 		}
 
 	}
-private class CloseHandler implements EventHandler<ActionEvent>{
 
-	@Override
-	public void handle(ActionEvent arg0) {
-		pStage.close();
-		
-	}
-	
-}
-	
 	/**
 	 * @return the file
 	 */
