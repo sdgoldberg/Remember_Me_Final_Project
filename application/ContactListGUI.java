@@ -75,8 +75,9 @@ public class ContactListGUI extends Application {
 		Label directionsLabel = new Label("Directions");
 		Label instructions = new Label(
 				"  Please enter the name of your input file below. The input file Should be a text file with the following CSV Format"
-						+ "\n  Last Name, First Name, Phone Number. \n  Please click Enter after typing the file name to see your contact list.");
+						+ "\n  Last Name, First Name, Phone Number \nOR \nLast Name, First Name, Phone Number, PhotoUrl. \n  Please click Enter after typing the file name to see your contact list.");
 		directionsLabel.setFont(new Font("Times New Roman", 20));
+		instructions.setPadding(new Insets(5));
 		instructions.setFont(new Font("Times New Roman", 15));
 		directions.getChildren().addAll(directionsLabel, instructions);
 		Label fileLabel = new Label("Input File Name Here (must be a CSV file)");
@@ -131,7 +132,6 @@ public class ContactListGUI extends Application {
 			mainScene = new Scene(mainLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
 			primary.setScene(mainScene);
 			primary.centerOnScreen();
-			primary.setMaxHeight(WINDOW_HEIGHT);
 			primary.show();
 		}
 

@@ -110,12 +110,10 @@ public class MainLayout extends BorderPane {
 		recent.getChildren().add(recents);
 		this.setAlignment(recents, Pos.TOP_LEFT);
 		recentScroll = new ScrollPane(recent);
-		recentScroll.setContent(recent);
 		recentScroll.setVisible(true);
-		recentScroll.setPannable(true);
-		recentScroll.setFitToHeight(true);
-		recentScroll.setFitToWidth(true);
-		this.setLeft(recentScroll);
+		recentScroll.setPannable(false);
+		recentScroll.setFitToHeight(false);
+		recentScroll.setFitToWidth(false);
 		// create contact shallow objects from contact list
 		VBox rows = new VBox();
 		HBox columns;
@@ -133,6 +131,8 @@ public class MainLayout extends BorderPane {
 			}
 			rows.getChildren().add(columns);
 		}
+		rows.setBorder((new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DOTTED, CornerRadii.EMPTY,
+				new BorderWidths(5), Insets.EMPTY))));
 		contactsScroll = new ScrollPane(rows);
 		contactsScroll.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 		contactsScroll.autosize();
@@ -150,8 +150,7 @@ public class MainLayout extends BorderPane {
 		buttons.getChildren().addAll(add, remove, close, filterLabel, filterBy);
 		this.setBottom(buttons);
 		this.setCenter(contactsScroll);
-		rows.setBorder((new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DOTTED, CornerRadii.EMPTY,
-				new BorderWidths(5), Insets.EMPTY))));
+		this.setLeft(recentScroll);
 		// Set the header of this scene
 		Label header = new Label("Contacts");
 		header.setFont(new Font("Arial", 40));
@@ -159,7 +158,7 @@ public class MainLayout extends BorderPane {
 		this.setAlignment(header, Pos.TOP_CENTER);
 		// set the file information labels on right
 		fileDirect = new VBox(10);
-		currentFile = new Label("Current File: " + fileName);
+		currentFile = new Label("Current File: " + fileName + "     ");
 		changeFile = new Button("Select a Different Contact File");
 		fileDirect.getChildren().addAll(currentFile, changeFile);
 		fileDirect.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
@@ -181,7 +180,7 @@ public class MainLayout extends BorderPane {
 		public void handle(MouseEvent e) {
 			contactDeep = new Scene(new ContactDeepLayout(contact.getPerson(), layout, fileName, pStage),
 					pStage.getWidth(), pStage.getHeight());
-
+			
 			recentsList.insert(contact.getPerson());
 			ContactShallow newShallow = new ContactShallow(contact.getPerson(), contact.getMainlayout());
 			recent.getChildren().add(1, newShallow);
