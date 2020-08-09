@@ -1,11 +1,15 @@
 package application;
 
+import java.io.File;
+
 import javafx.scene.layout.Pane;
 
 public class LayoutManage extends Pane{
 	private static ContactList contacts = new ContactList();
 	private static ContactList recentsList = new ContactList();
 	private static ContactList favorites = new ContactList();
+	private static String fileName;
+	private static File file;
 	/**
 	 * @return the contacts
 	 */
@@ -41,6 +45,30 @@ public class LayoutManage extends Pane{
 	 */
 	public static void setFavorites(ContactList favorites) {
 		LayoutManage.favorites = favorites;
+	}
+	/**
+	 * @return the fileName
+	 */
+	public static String getFileName() {
+		return fileName;
+	}
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public static void setFileName(String fileName) {
+		LayoutManage.fileName = fileName;
+	}
+	/**
+	 * @return the file
+	 */
+	public static File getFile() {
+		return file;
+	}
+	/**
+	 * @param file the file to set
+	 */
+	public static void setFile(File file) {
+		LayoutManage.file = file;
 	}
 	
 }

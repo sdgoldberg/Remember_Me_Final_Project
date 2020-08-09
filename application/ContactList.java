@@ -96,16 +96,20 @@ public class ContactList implements ContactListADT<Contact> {
 			throw new IllegalArgumentException("null contact");
 		} else {
 			ContactNode newNode = new ContactNode(addition);
+		//if there are no items in the list, insert into root
 			if (size == 0) {
 				root = newNode;
 				size++;
-			} else {
+			}
+		//if there are already items in the list	
+			else {
 				ContactNode current = root;
 				boolean inserted = false;
 				int i = 0;
+			//loop through the list to find the position to insert newNode
 				while (i < size && inserted == false) {
 					// if new node should come before the current node
-					if ((current.getPerson()).compareTo(addition) > 0) {
+					if (current.getPerson().compareTo(addition) > 0) {
 						// if current is the root
 						if (current == root) {
 							newNode.setNext(current);
@@ -121,20 +125,23 @@ public class ContactList implements ContactListADT<Contact> {
 							size++;
 							inserted = true;
 						}
-					} else if (current.getPerson().compareTo(addition) == 0) {
-						if (current.hasNext()) {
-							current.getNext().setPrevious(newNode);
-							newNode.setPrevious(current);
-							newNode.setNext(current.getNext());
-							current.setNext(newNode);
-							size++;
-							inserted = true;
-						} else {
-							current.setNext(newNode);
-							newNode.setPrevious(current);
-							size++;
-							inserted = true;
-						}
+					}
+					//if the newNode equals the currentNode
+					else if (current.getPerson().compareTo(addition) == 0) { 
+						i = size;
+						/*	if (current.hasNext()) {
+								current.getNext().setPrevious(newNode);
+								newNode.setPrevious(current);
+								newNode.setNext(current.getNext());
+								current.setNext(newNode);
+								size++;
+								inserted = true;
+							} else {
+								current.setNext(newNode);
+								newNode.setPrevious(current);
+								size++;
+								inserted = true;
+							}*/
 
 					} else {
 						if (!current.hasNext()) {
@@ -272,13 +279,17 @@ public class ContactList implements ContactListADT<Contact> {
 				Contact other = this.get(j);
 				if(this.get(i).equals(other)){
 					this.remove(other);
-					System.out.println("Other name: " + other.getName());
 				}
 			}
 		}
 		System.out.println("Ending Duplicate removal");
 	}
-
+public boolean isEmpty() {
+	if(size() == 0) {
+		return true;
+	}
+	return false;
+}
 	public void print() {
 		for (int i = 0; i < size; i++) {
 			System.out.print(get(i).getName() + ", ");

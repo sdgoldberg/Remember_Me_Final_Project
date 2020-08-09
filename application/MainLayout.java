@@ -13,6 +13,7 @@ package application;
 
 import java.io.File;
 
+
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -50,7 +51,7 @@ public class MainLayout extends BorderPane {
 	private Scanner scan;
 	// ContactList
 	private ContactList contacts;
-	private static ContactList recentsList;
+	private ContactList recentsList;
 	private ContactList favorites;
 	// buttons
 	private Button add;
@@ -61,32 +62,35 @@ public class MainLayout extends BorderPane {
 	private Label recents;
 	private Label filterLabel;
 	private Label currentFile;
-	// VBox
+	private Label header;
+	// Layouts
 	private VBox recent;
 	private VBox fileDirect;
-	// ScrollPane
 	private ScrollPane recentScroll;
 	private ScrollPane contactsScroll;
+	private HBox buttons;
+	private FileInputLayout fileInputLayout;
+	private AddContactLayout addLayout;
 	// ComboBox
 	private ComboBox<String> filterBy;
-	// Hbox
-	private HBox buttons;
-	// BorderPane
-	//BorderPane mainPane;
+	//Scenes
 	private Scene contactDeep;
-
+	private Scene fileScene;
+	private Scene addScene;
 	public MainLayout(String filename, Stage stage) throws FileNotFoundException {
 		this.fileName = filename;
-		System.out.println("fileName: " + fileName);
+		LayoutManage.setFileName(filename);
 		contacts = LayoutManage.getContacts();
 		recentsList = LayoutManage.getRecentsList();
 		favorites = LayoutManage.getFavorites();
 		//mainPane = new BorderPane();
 		File file = new File(filename);
+		LayoutManage.setFile(file);
 		pStage = stage;
 		scan = new Scanner(file);
 //insert contacts from file into the list
 		int count = 1;
+		if(contacts.isEmpty()) {
 		while (scan.hasNextLine()) {
 			String infoStr = "" + scan.nextLine();
 			String[] info = infoStr.split(",");
@@ -97,10 +101,10 @@ public class MainLayout extends BorderPane {
 				newContact = new Contact(info[1] + " " + info[0], info[2], info[3]);
 			}
 			contacts.insert(newContact);
-			System.out.print(count + " ");
-			contacts.print();
 			count++;
 		}
+	}
+		contacts.print();	
 		//contacts.remove_Duplicates();
 		// create a recents tab on the left
 		recent = new VBox(8);
@@ -138,6 +142,7 @@ public class MainLayout extends BorderPane {
 		contactsScroll.autosize();
 		// Set the Buttons on the bottom of the screen
 		add = new Button("Add Contact");
+		add.setOnAction(new AddContactHandler());
 		remove = new Button("Remove Contact");
 		close = new Button("Close Application");
 		CloseHandler ch = new CloseHandler();
@@ -152,14 +157,15 @@ public class MainLayout extends BorderPane {
 		this.setCenter(contactsScroll);
 		this.setLeft(recentScroll);
 		// Set the header of this scene
-		Label header = new Label("Contacts");
+		header = new Label("Contacts");
 		header.setFont(new Font("Arial", 40));
 		this.setTop(header);
 		this.setAlignment(header, Pos.TOP_CENTER);
-		// set the file information labels on right
+	// set the file information labels on right
 		fileDirect = new VBox(10);
 		currentFile = new Label("Current File: " + fileName + "     ");
 		changeFile = new Button("Select a Different Contact File");
+		changeFile.setOnAction(new ChangeFileHandler());
 		fileDirect.getChildren().addAll(currentFile, changeFile);
 		fileDirect.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 		this.setRight(fileDirect);
@@ -193,13 +199,29 @@ public class MainLayout extends BorderPane {
 	private class CloseHandler implements EventHandler<ActionEvent> {
 
 		@Override
-		public void handle(ActionEvent arg0) {
+		public void handle(ActionEvent e) {
 			pStage.close();
 
 		}
 
 	}
+	private class ChangeFileHandler implements EventHandler<ActionEvent>{
+		@Override
+		public void handle(ActionEvent e) {
+			fileInputLayout = new FileInputLayout(pStage);
+			fileScene = new Scene(fileInputLayout, 800, 200);
+			pStage.setScene(fileScene);
+		}
+	}
+	private class AddContactHandler implements EventHandler<ActionEvent> {
 
+		public void handle(ActionEvent e) {
+			addLayout = new AddContactLayout(pStage);
+			addScene = new Scene(addLayout, pStage.getWidth(), pStage.getHeight());
+			pStage.setScene(addScene);
+		}
+		
+	}
 	/**
 	 * @return the file
 	 */

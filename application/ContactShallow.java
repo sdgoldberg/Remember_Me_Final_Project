@@ -186,7 +186,6 @@ public class ContactShallow extends Pane {
 			} else {
 				star.setImage(filledStar);
 				person.setCloseFriend(true);
-				System.out.println(getMainlayout().getFavorites());
 				getMainlayout().getFavorites().insert(person);
 			}
 
