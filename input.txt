@@ -1,17 +1,17 @@
-Goldberg,Sam,‭(201) 815-6552‬,pic.png
-Samuels,Jonathon,(201) 677-9852
-Levy,Jack,(986) 455-5218
-Alper,Andrew,(555) 777-9852
-Jackson,Andrew,(315) 982-9857
-Bitton,Sharon,‭(201) 921-4305‬
-Finn,Elana,(917) 566-2579
-Daneshrad,Bryce,(908) 551 0845
-H,Jack,(704) 791 0954
-Levy,Jack,(455) 909 9099
-C,Evan,‭(917) 881-3700‬
-Blinken,JJ,‭(917) 865-5544
-Bale,Christain, (808) 099 5905
-Cruise,Tom,(707) 557 0999
-Musk,Elon,(010) 101 0101
-Edison,Thomas,(333) 303 3333
-Goldberg, Harrison, (201) 566 9852
+Goldberg,Sam,(201) 815-6552,pictures/pic.png,
+Bezos,Jeff,(201) 677-9852,pictures/jeffBezos.jpeg,
+Rogan,Joe,(986) 455-5218,pictures/joeRogan.jpeg
+ ,Bucky,(608) 263-2400,pictures/bucky.jpeg
+Presley,Elvis,(315) 982-9857,pictures/elvis.jpeg
+Bowie,David,(201) 921-4305,pictures/davidBowie.jpeg
+Finn,Elana,(917) 566-2579,
+Daneshrad,Bryce,(908) 551 0845,
+Miller,Mac,(704) 791 0954,pictures/macMiller.jpeg
+Levy,Jack,(455) 909 9099,
+C,Evan,(917) 881-3700,
+Blinken,JJ,(917) 865-5544,
+Bale,Christain, (808) 099 5905,
+Cruise,Tom,(707) 557 0999,pictures/tomCruise.jpeg
+Musk,Elon,(010) 101 0101,pictures/elonMusk.jpeg,
+Edison,Thomas,(333) 303 3333,
+McGregor,Conor,(201) 566 9852,pictures/conorMcgregor.jpeg

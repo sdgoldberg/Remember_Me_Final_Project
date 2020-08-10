@@ -39,6 +39,10 @@ public class FileInputLayout extends BorderPane{
 	Scene mainScene;
 //Strings
 	String fileName;
+//Button
+	Button enter;
+	Button close;
+
 	public FileInputLayout(Stage s) {
 	stage = s;
 	filePrompt = new HBox(8);
@@ -64,12 +68,15 @@ public class FileInputLayout extends BorderPane{
 	this.setCenter(directions);
 	setAlignment(directions, Pos.TOP_CENTER);
 	setAlignment(filePrompt, Pos.CENTER);
-	Button enter = new Button("Enter");
+    enter = new Button("Enter");
 	EnterHandler eh = new EnterHandler();
 	enter.setOnAction(eh);
 	filePrompt.getChildren().add(enter);
 	this.setVisible(true);
 	this.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
+	close = new Button("Close");
+	this.setBottom(close);
+	close.setOnAction(new CloseHandler());
 }
 	public class EnterHandler implements EventHandler<ActionEvent> {
 
@@ -96,5 +103,14 @@ public class FileInputLayout extends BorderPane{
 			stage.centerOnScreen();
 			stage.show();
 		}
+	}
+	private class CloseHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent e) {
+			stage.close();
+
+		}
+
 	}
 }

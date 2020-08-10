@@ -1,6 +1,10 @@
 package application;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 import javafx.scene.layout.Pane;
 
@@ -70,5 +74,35 @@ public class LayoutManage extends Pane{
 	public static void setFile(File file) {
 		LayoutManage.file = file;
 	}
+/*	
+	public static void save() {
+	File savedFile = new File("saved.txt");
 	
+	try {
+		savedFile.createNewFile();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	PrintWriter write;
+	try {
+		write = new PrintWriter(savedFile);
+		
+		for(int i =0; i < contacts.size(); i++) {
+			Contact contact = contacts.get(i);
+			String photoURL = "";
+			if(!contact.getPhotoURL().equals("") || !contact.getPhotoURL().equals(" ")) {
+				photoURL = contact.getPhotoURL();
+			}
+			String[] name = contact.getName().split(" ");
+			write.println(name[1] + "," + name[0]+ "," + contact.getPhoneNumber() + "," + photoURL + "," + contact.getDob() + "," + contact.getSchool() + "," + contact.getMajor() + ","
+			+ contact.getWork() + "," + contact.getRelationship() + "," + contact.getCloseFriend() + "," + contact.getNotes() + ",");
+		}
+		
+	} catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+			
+
+	}*/
 }

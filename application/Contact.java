@@ -47,8 +47,6 @@ public Contact(String name, String phoneNumber, String photoURL) {
 	this.photoURL = getClass().getResource(photoURL).toExternalForm();
 	if(photoURL.equals("") ||photoURL == null) {
 		this.photoURL =  getClass().getResource("defaultPic.png").toExternalForm();
-	}else {
-	this.photoURL = getClass().getResource(photoURL).toExternalForm();
 	}
 	this.school = "";
 	this.major = "";

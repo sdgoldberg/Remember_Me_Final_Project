@@ -26,7 +26,6 @@ import javafx.scene.layout.VBox;
 public class ContactShallow extends Pane {
 	private Contact person;
 	private Image star;
-	private MainLayout mainlayout;
 
 
 	private ImageView starImage = new ImageView();
@@ -41,15 +40,20 @@ public class ContactShallow extends Pane {
 	private Image unfilledStar = new Image(getClass().getResource("starUnfilled.png").toExternalForm());
 	private StarHandler change;
 	
-	public ContactShallow(Contact p, MainLayout l) {
+	public ContactShallow(Contact p) {
 		person = p;
-		mainlayout = l;
 //create orderPane layout
 		BorderPane bor = new BorderPane();
 //create a new VBox to format the ShallowContact	
 		v = new VBox();
 //insert profile picture into layout
+		try {
 		picture = new Image(person.getPhotoURL());
+		}catch (IllegalArgumentException e) {
+			person.setPhotoURL("defaultPic.png");
+			picture = new Image(person.getPhotoURL());
+			
+		}
 		profilePic = new ImageView(picture);
 		profilePic.setFitWidth(100);
 		profilePic.setPreserveRatio(true);
@@ -76,19 +80,7 @@ public class ContactShallow extends Pane {
 		bor.setCenter(v);
 		this.getChildren().add(bor);
 	}
-	/**
-	 * @return the mainlayout
-	 */
-	public MainLayout getMainlayout() {
-		return mainlayout;
-	}
 
-	/**
-	 * @param mainlayout the mainlayout to set
-	 */
-	public void setMainlayout(MainLayout mainlayout) {
-		this.mainlayout = mainlayout;
-	}
 	/**
 	 * @return the person
 	 */
@@ -112,6 +104,7 @@ public class ContactShallow extends Pane {
 		} else {
 			starImage.setImage(filledStar);
 		}
+		LayoutManage.getFavorites().print();
 	}
 
 	/**
@@ -182,11 +175,11 @@ public class ContactShallow extends Pane {
 			if (star.getImage().equals(filledStar)) {
 				star.setImage(unfilledStar);
 				person.setCloseFriend(false);
-				getMainlayout().getFavorites().remove(person);
+				LayoutManage.getFavorites().remove(person);
 			} else {
 				star.setImage(filledStar);
 				person.setCloseFriend(true);
-				getMainlayout().getFavorites().insert(person);
+				LayoutManage.getFavorites().insert(person);
 			}
 
 		}

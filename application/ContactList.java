@@ -40,7 +40,7 @@ public class ContactList implements ContactListADT<Contact> {
 		}
 
 		public boolean hasNext() {
-			if (next != null) {
+			if (getNext() != null) {
 				return true;
 			} else {
 				return false;
@@ -94,7 +94,8 @@ public class ContactList implements ContactListADT<Contact> {
 	public void insert(Contact addition) {
 		if (addition == null) {
 			throw new IllegalArgumentException("null contact");
-		} else {
+		}
+		else {
 			ContactNode newNode = new ContactNode(addition);
 		//if there are no items in the list, insert into root
 			if (size == 0) {
@@ -155,6 +156,7 @@ public class ContactList implements ContactListADT<Contact> {
 						}
 					}
 				}
+
 			}
 		}
 	}
@@ -228,7 +230,7 @@ public class ContactList implements ContactListADT<Contact> {
 	public int getIndex(Contact findMe) {
 		int i = 0;
 		ContactNode current = root;
-		while (i < size) {
+		while (i < size && current != null) {
 			if (current.getPerson().equals(findMe)) {
 				return i;
 			} else {
@@ -265,7 +267,7 @@ public class ContactList implements ContactListADT<Contact> {
 		} else {
 			ContactNode current = root;
 			int i = 0;
-			while (i <= index && current.hasNext()) {
+			while (i < index && current.hasNext()) {
 				current = current.getNext();
 				i++;
 			}
@@ -293,8 +295,8 @@ public boolean isEmpty() {
 	public void print() {
 		for (int i = 0; i < size; i++) {
 			System.out.print(get(i).getName() + ", ");
-			System.out.println();
 		}
+		System.out.println();
 	}
 
 }

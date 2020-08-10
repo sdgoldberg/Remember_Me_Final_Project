@@ -46,7 +46,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class MainLayout extends BorderPane {
+public class RemoveLayout extends BorderPane {
 	private String fileName;
 	private File file;
 	private Stage pStage;
@@ -79,7 +79,7 @@ public class MainLayout extends BorderPane {
 	private Scene contactDeep;
 	private Scene fileScene;
 	private Scene addScene;
-	public MainLayout(String filename, Stage stage) throws FileNotFoundException {
+	public RemoveLayout(String filename, Stage stage) throws FileNotFoundException {
 		this.fileName = filename;
 		LayoutManage.setFileName(filename);
 		contacts = LayoutManage.getContacts();
@@ -149,7 +149,7 @@ public class MainLayout extends BorderPane {
 			int i = 0;
 			while (i < 4 && index < contacts.size()) {
 				ContactShallow lay = new ContactShallow(contacts.get(index));
-				RecentsHandler rh = new RecentsHandler(lay);
+				DeleteHandler rh = new DeleteHandler(lay);
 				lay.setOnMouseClicked(rh);
 				columns.getChildren().add(lay);
 				index++;
@@ -163,25 +163,18 @@ public class MainLayout extends BorderPane {
 		contactsScroll.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 		contactsScroll.autosize();
 		// Set the Buttons on the bottom of the screen
-		add = new Button("Add Contact");
-		add.setOnAction(new AddContactHandler());
-		remove = new Button("Remove Contact");
-		remove.setOnAction(new RemoveHandler());
+
 		close = new Button("Close Application");
 		CloseHandler ch = new CloseHandler();
 		close.setOnAction(ch);
-		filterBy = new ComboBox<String>();
-		filterLabel = new Label("Filter By");
-		filterBy.getItems().addAll("All", "Favorites", "Family", "Recent");
-		filterBy.setValue("All");
-		filterBy.setOnAction(new FilterByHandler());
 		buttons = new HBox(10);
-		buttons.getChildren().addAll(add, remove, close, filterLabel, filterBy);
+		buttons.getChildren().addAll(
+				close);
 		this.setBottom(buttons);
 		this.setCenter(contactsScroll);
 		this.setLeft(recentScroll);
 		// Set the header of this scene
-		header = new Label("Contacts");
+		header = new Label("Click a Contact to Remove");
 		header.setFont(new Font("Arial", 40));
 		this.setTop(header);
 		this.setAlignment(header, Pos.TOP_CENTER);
@@ -198,22 +191,23 @@ public class MainLayout extends BorderPane {
 		this.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
 	}
 
-	private class RecentsHandler implements EventHandler<MouseEvent> {
+	private class DeleteHandler implements EventHandler<MouseEvent> {
 		ContactShallow contact;
 
-		private RecentsHandler(ContactShallow contact) {
+		private DeleteHandler(ContactShallow contact) {
 			this.contact = contact;
 		}
 
 		@Override
 		public void handle(MouseEvent e) {
-			contactDeep = new Scene(new ContactDeepLayout(contact.getPerson(), pStage),
-					pStage.getWidth(), pStage.getHeight());
-			
-			recentsList.insert(contact.getPerson());
-			ContactShallow newShallow = new ContactShallow(contact.getPerson());
-			recent.getChildren().add(1, newShallow);
-			pStage.setScene(contactDeep);
+			LayoutManage.getContacts().remove(contact.getPerson());
+			try {
+				Scene mainScene = new Scene(new MainLayout(LayoutManage.getFileName(), pStage), pStage.getWidth(), pStage.getHeight());
+				pStage.setScene(mainScene);
+				pStage.show();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
 
 		}
 
@@ -228,22 +222,6 @@ public class MainLayout extends BorderPane {
 		}
 
 	}
-	private class RemoveHandler implements EventHandler<ActionEvent>{
-
-		@Override
-		public void handle(ActionEvent arg0) {
-			try {
-				Scene removeScene = new Scene(new RemoveLayout(LayoutManage.getFileName(), pStage), pStage.getWidth(), pStage.getHeight());
-				pStage.setScene(removeScene);
-				pStage.show();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-		
-	}
 	private class ChangeFileHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent e) {
@@ -252,111 +230,7 @@ public class MainLayout extends BorderPane {
 			pStage.setScene(fileScene);
 		}
 	}
-	private class AddContactHandler implements EventHandler<ActionEvent> {
 
-		public void handle(ActionEvent e) {
-			addLayout = new AddContactLayout(pStage);
-			addScene = new Scene(addLayout, 700, 650);
-			pStage.setScene(addScene);
-		}
-	}
-	private class FilterByHandler implements EventHandler<ActionEvent>{
-
-		@Override
-		public void handle(ActionEvent arg0) {
-			if (filterBy.getValue().equals("All")){
-				VBox rows = new VBox();
-				HBox columns;
-				int index = 0;
-				while (index < contacts.size()) {
-					columns = new HBox();
-					int i = 0;
-					while (i < 4 && index < contacts.size()) {
-						ContactShallow lay = new ContactShallow(contacts.get(index));
-						RecentsHandler rh = new RecentsHandler(lay);
-						lay.setOnMouseClicked(rh);
-						columns.getChildren().add(lay);
-						index++;
-						i++;
-					}
-					rows.getChildren().add(columns);
-				}
-				rows.setBorder((new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DOTTED, CornerRadii.EMPTY,
-						new BorderWidths(5), Insets.EMPTY))));
-				contactsScroll.setContent(rows);
-			}else if(filterBy.getValue().equals("Favorites")) {
-				VBox rows = new VBox();
-				HBox columns;
-				int index = 0;
-				while (index < favorites.size()) {
-					columns = new HBox();
-					int i = 0;
-					while (i < 4 && index < favorites.size()) {
-						ContactShallow lay = new ContactShallow(favorites.get(index));
-						RecentsHandler rh = new RecentsHandler(lay);
-						lay.setOnMouseClicked(rh);
-						columns.getChildren().add(lay);
-						index++;
-						i++;
-					}
-					rows.getChildren().add(columns);
-				}
-				rows.setBorder((new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DOTTED, CornerRadii.EMPTY,
-						new BorderWidths(5), Insets.EMPTY))));
-				contactsScroll.setContent(rows);
-			}else if(filterBy.getValue().equals("Recent")) {
-				System.out.println("test");
-				VBox rows = new VBox();
-				HBox columns;
-				int index = 0;
-				while (index < recentsList.size()) {
-					columns = new HBox();
-					int i = 0;
-					System.out.println("Recents list size: " + recentsList.size());
-					while (i < 4 && index < recentsList.size()) {
-						ContactShallow lay = new ContactShallow(recentsList.get(index));
-						RecentsHandler rh = new RecentsHandler(lay);
-						lay.setOnMouseClicked(rh);
-						columns.getChildren().add(lay);
-						index++;
-						i++;
-					}
-					rows.getChildren().add(columns);
-				}
-				rows.setBorder((new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DOTTED, CornerRadii.EMPTY,
-						new BorderWidths(5), Insets.EMPTY))));
-				contactsScroll.setContent(rows);
-				contactsScroll.setVisible(true);
-			}else if(filterBy.getValue().equals("Family")) {
-				VBox rows = new VBox();
-				HBox columns;
-				int index = 0;
-				ContactList family = new ContactList();
-				for(int i =0; i < contacts.size(); i++) {
-					if(contacts.get(i).getRelationship().toLowerCase().equals("family")){
-						family.insert(contacts.get(i));
-					}
-				}
-				while (index < family.size()) {
-					columns = new HBox();
-					int i = 0;
-					while (i < 4 && index < family.size()) {
-						ContactShallow lay = new ContactShallow(family.get(index));
-						RecentsHandler rh = new RecentsHandler(lay);
-						lay.setOnMouseClicked(rh);
-						columns.getChildren().add(lay);
-						index++;
-						i++;
-					}
-					rows.getChildren().add(columns);
-				}
-				rows.setBorder((new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DOTTED, CornerRadii.EMPTY,
-						new BorderWidths(5), Insets.EMPTY))));
-				contactsScroll.setContent(rows);
-			}
-		}
-		
-	}
 	/**
 	 * @return the file
 	 */
