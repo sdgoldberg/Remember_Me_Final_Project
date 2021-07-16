@@ -1,4 +1,4 @@
-README  Course: cs400 Semester: Summer 2019 Project name: “Remember Me?” Student Name: Sam Goldberg
+README  Course: cs400 Semester: Summer 2020 Project name: “Remember Me?” Student Name: Sam Goldberg
 email: sdgoldberg@wisc.edu
 Other notes or comments to the grader: Each line in the CSV must have one of the following formats
 	1. lastName, firstName, phoneNumber
