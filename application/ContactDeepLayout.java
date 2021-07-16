@@ -1,3 +1,15 @@
+//////////////// FILE HEADER//////////////////////////////////////////////
+//
+// Title: HelloFX
+// Files:  MainLayout.java, ContactListGUI.java, ContactListADT.java, ContactShallow.java, MainLayout.java, TestInputTxt.java, AddContactLayout.java, 
+//         Contact.java, ContactDeepLayout.java, ContactList.java, ContactListGUI.java, FileInputLayout.java, LayoutManage.java, RemoveLayout
+// Course:  CS 400, Summer, 2020
+// Lecture: 002
+// Author:  Sam Goldberg
+// Email:   sdgoldberg@wisc.edu
+// Lecturer's Name: Florian Heimerl
+//
+//////////////////////////////////////////////////////////////////////////////
 package application;
 
 import java.io.FileNotFoundException;
@@ -30,27 +42,35 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class ContactDeepLayout extends BorderPane{
+/**
+ * This layout creates a visible contact that contains more information than
+ * ContactShallow
+ * 
+ * @author Sam Goldberg
+ *
+ */
+public class ContactDeepLayout extends BorderPane {
 	private Contact person;
 	private Image star;
 	private Stage stage;
+	public String mom;
 	private static final int WINDOW_WIDTH = 1200;
 	private static final int WINDOW_HEIGHT = 700;
-	//int
+	// int
 	private static int lastRecent = -1;
-  //ImageView
+	// ImageView
 	private ImageView starImage = new ImageView();
-   //ContactList
+	// ContactList
 	private ContactList contacts;
 	private static ContactList recentsList;
 	private ContactList favorites;
-	
-	//ScrollPane
+
+	// ScrollPane
 	private ScrollPane scroll;
 	private ScrollPane recentScroll;
-	//VBox
+	// VBox
 	private VBox recent;
-	//layout
+	// layout
 	private HBox h;
 	private VBox v;
 	private HBox bor;
@@ -58,12 +78,12 @@ public class ContactDeepLayout extends BorderPane{
 	private VBox fileDirect;
 	private AddContactLayout editLayout;
 	private MainLayout mainLayout;
-	//Images
-	private Image filledStar = new Image(getClass().getResource("goldStarFilled.png").toExternalForm());
-	private Image unfilledStar = new Image(getClass().getResource("starUnfilled.png").toExternalForm());
+	// Images
+	private Image filledStar = new Image(getClass().getResource("pictures/goldStarFilled.png").toExternalForm());
+	private Image unfilledStar = new Image(getClass().getResource("pictures/starUnfilled.png").toExternalForm());
 	private Image picture;
 	private ImageView profilePic;
-	//Labels
+	// Labels
 	private Label deepContact;
 	private Label name;
 	private Label phoneNumber;
@@ -76,20 +96,26 @@ public class ContactDeepLayout extends BorderPane{
 	private Label notes;
 	private Label currentFile;
 	private Label recents;
-	//Buttons
+	// Buttons
 	Button back;
 	Button editContact;
 
-	//EventHandlers
+	// EventHandlers
 	private StarHandler change;
-	
+
+	/**
+	 * An Argument Constructor of ContactDeepLayout
+	 * 
+	 * @param p     - the contact to be displayed
+	 * @param stage - the stage of the application
+	 */
 	public ContactDeepLayout(Contact p, Stage stage) {
 		person = p;
 		this.stage = stage;
 		contacts = LayoutManage.getContacts();
 		recentsList = LayoutManage.getRecentsList();
 		favorites = LayoutManage.getFavorites();
-		
+
 		deepContact = new Label("Contact");
 		deepContact.setFont(Font.font("Times New Roman", FontWeight.BOLD, 35));
 		AddContactLayout.setAlignment(deepContact, Pos.TOP_CENTER);
@@ -115,7 +141,7 @@ public class ContactDeepLayout extends BorderPane{
 		school.setFont(new Font("Times New Roman", 30));
 		major = new Label("Major: " + person.getMajor());
 		major.setFont(new Font("Times New Roman", 30));
-		work = new Label ("Work: " + person.getWork());
+		work = new Label("Work: " + person.getWork());
 		work.setFont(new Font("Times New Roman", 30));
 		relationship = new Label("Relationship: " + person.getRelationship());
 		relationship.setFont(new Font("Times New Roman", 30));
@@ -123,14 +149,14 @@ public class ContactDeepLayout extends BorderPane{
 		origin.setFont(new Font("Times New Roman", 30));
 		notes = new Label("Notes: " + person.getNotes());
 		notes.setFont(new Font("Times New Roman", 30));
-	
+
 		v.getChildren().addAll(name, phoneNumber, dob, school, major, work, relationship, origin, notes);
 		if (person.getCloseFriend()) {
 			starImage.setImage(filledStar);
 		} else {
 			starImage.setImage(unfilledStar);
 		}
-	
+
 		bor = new HBox(2);
 		starImage.setFitWidth(100);
 		starImage.setPreserveRatio(true);
@@ -140,9 +166,10 @@ public class ContactDeepLayout extends BorderPane{
 		starImage.setOnMouseClicked(change);
 		bor.getChildren().addAll(starImage, v);
 		this.setCenter(bor);
-		bor.setBorder((new Border(new BorderStroke(Color.valueOf("#9E9E9E"), BorderStrokeStyle.DOTTED, CornerRadii.EMPTY, new BorderWidths(2), Insets.EMPTY))));
+		bor.setBorder((new Border(new BorderStroke(Color.valueOf("#9E9E9E"), BorderStrokeStyle.DOTTED,
+				CornerRadii.EMPTY, new BorderWidths(2), Insets.EMPTY))));
 		// create a recents tab on the left
-		
+
 		recent = new VBox(8);
 		recents = new Label("      Recents           ");
 		recents.setFont(new Font("Times New Roman", 30));
@@ -150,7 +177,7 @@ public class ContactDeepLayout extends BorderPane{
 		recent.getChildren().add(recents);
 		setAlignment(recents, Pos.TOP_LEFT);
 		System.out.println("recents size: " + recentsList.size());
-		for(int i = recentsList.size()-1; i > lastRecent; i--) {
+		for (int i = recentsList.size() - 1; i > lastRecent; i--) {
 			ContactShallow newShallow = new ContactShallow(recentsList.get(i));
 			recent.getChildren().add(1, newShallow);
 		}
@@ -160,18 +187,18 @@ public class ContactDeepLayout extends BorderPane{
 		recentScroll.setFitToHeight(false);
 		recentScroll.setFitToWidth(false);
 		this.setLeft(recentScroll);
-		
-		//Add Control Buttons
+
+		// Add Control Buttons
 		controls = new HBox(10);
 		back = new Button("Back");
-		BackHandler bh = new BackHandler(this);
+		BackHandler bh = new BackHandler();
 		back.setOnAction(bh);
 		editContact = new Button("Edit Contact");
 		editContact.setOnAction(new EditContactHandler());
 		controls.getChildren().addAll(back, editContact);
 		this.setBottom(controls);
-		
-		//add file information
+
+		// add file information
 		currentFile = new Label("Current File: " + LayoutManage.getFileName() + "     ");
 		currentFile.setFont(new Font("Times New Roman", 20));
 		fileDirect = new VBox(10);
@@ -276,9 +303,21 @@ public class ContactDeepLayout extends BorderPane{
 		this.school = school;
 	}
 
+	/**
+	 * This handler is activated when the user clicks on star and changes the
+	 * "closeFriend" field of the contact and changes how the star looks
+	 * 
+	 * @author samgoldberg
+	 *
+	 */
 	private class StarHandler implements EventHandler<MouseEvent> {
 		ImageView star;
 
+		/**
+		 * constructor of StarHandler
+		 * 
+		 * @param star - the star to be accessed
+		 */
 		public StarHandler(ImageView star) {
 			this.star = star;
 		}
@@ -292,33 +331,43 @@ public class ContactDeepLayout extends BorderPane{
 			} else {
 				star.setImage(filledStar);
 				person.setCloseFriend(true);
-				favorites.insert(person);	
+				favorites.insert(person);
 			}
 
 		}
 
 	}
-	private class BackHandler implements EventHandler<ActionEvent>{
-		ContactDeepLayout contactDeep;
-		private BackHandler(ContactDeepLayout contactDeep) {
-			this.contactDeep = contactDeep;
-		}
+
+	/**
+	 * This handler send the user back to the Home Screen
+	 * 
+	 * @author Sam Goldberg
+	 *
+	 */
+	private class BackHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent e) {
-			try {
+			mainLayout = new MainLayout(LayoutManage.getFileName(), stage);
 
-				mainLayout = new MainLayout(LayoutManage.getFileName(), stage);
-			} catch (FileNotFoundException e1) {
-			}
-			/*scroll = new ScrollPane(mainLayout);
-			scroll.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));*/
+			/*
+			 * scroll = new ScrollPane(mainLayout); scroll.setBackground(new Background(new
+			 * BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
+			 */
 			Scene mainScene = new Scene(mainLayout, ContactListGUI.getWindowWidth(), ContactListGUI.getWindowHeight());
 			stage.setScene(mainScene);
 			stage.centerOnScreen();
 			stage.show();
 		}
 	}
-	private class EditContactHandler implements EventHandler<ActionEvent>{
+
+	/**
+	 * This handler changes the scene to an AddContactLayout scene to edit the
+	 * current contact
+	 * 
+	 * @author Sam Goldberg
+	 *
+	 */
+	private class EditContactHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent arg0) {
 			editLayout = new AddContactLayout(stage, person);

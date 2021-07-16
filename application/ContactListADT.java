@@ -1,7 +1,8 @@
 //////////////// FILE HEADER//////////////////////////////////////////////
 //
 // Title: HelloFX
-// Files:  MainLayout.java, ContactListGUI.java, ContactListADT.java,ContactListTest.java, ContactShallow.java, MainLayout.java, TestInputTxt.java
+// Files:  MainLayout.java, ContactListGUI.java, ContactListADT.java, ContactShallow.java, MainLayout.java, TestInputTxt.java, AddContactLayout.java, 
+//         Contact.java, ContactDeepLayout.java, ContactList.java, ContactListGUI.java, FileInputLayout.java, LayoutManage.java, RemoveLayout
 // Course:  CS 400, Summer, 2020
 // Lecture: 002
 // Author:  Sam Goldberg

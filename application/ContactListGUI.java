@@ -1,7 +1,8 @@
 //////////////// FILE HEADER//////////////////////////////////////////////
 //
 // Title: HelloFX
-// Files:  MainLayout.java, ContactListGUI.java, ContactListADT.java,ContactListTest.java, ContactShallow.java, MainLayout.java, TestInputTxt.java
+// Files:  MainLayout.java, ContactListGUI.java, ContactListADT.java, ContactShallow.java, MainLayout.java, TestInputTxt.java, AddContactLayout.java, 
+//         Contact.java, ContactDeepLayout.java, ContactList.java, ContactListGUI.java, FileInputLayout.java, LayoutManage.java, RemoveLayout
 // Course:  CS 400, Summer, 2020
 // Lecture: 002
 // Author:  Sam Goldberg
@@ -15,7 +16,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -41,7 +41,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
+/**
+ * This Class is the base JavaFX class for The Contact List Application
+ * @author Sam Goldberg
+ *
+ */
 public class ContactListGUI extends Application {
 	ContactList contacts = new ContactList();
 	private static final int WINDOW_WIDTH = 1200;
@@ -69,12 +73,8 @@ public class ContactListGUI extends Application {
 //File Input Scene
 /////////////////////////////////
 		mainFileLayout = new FileInputLayout(primary);
-		fileScene = new Scene(mainFileLayout, 800, 250);
+		fileScene = new Scene(mainFileLayout, 1000, 250);
 		
-/////////////////////////////////////////////
-//main Scene with ContactShallow list
-////////////////////////////////////////////
-		// BorderPane is the main layout of the mainScene
 
 		pStage.setTitle(APP_TITLE);
 		pStage.setScene(fileScene);

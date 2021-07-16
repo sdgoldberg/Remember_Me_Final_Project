@@ -1,7 +1,8 @@
 //////////////// FILE HEADER//////////////////////////////////////////////
 //
 // Title: HelloFX
-// Files:  MainLayout.java, ContactListGUI.java, ContactListADT.java,ContactListTest.java, ContactShallow.java, MainLayout.java, TestInputTxt.java
+// Files:  MainLayout.java, ContactListGUI.java, ContactListADT.java, ContactShallow.java, MainLayout.java, TestInputTxt.java, AddContactLayout.java, 
+//         Contact.java, ContactDeepLayout.java, ContactList.java, ContactListGUI.java, FileInputLayout.java, LayoutManage.java, RemoveLayout
 // Course:  CS 400, Summer, 2020
 // Lecture: 002
 // Author:  Sam Goldberg
@@ -23,10 +24,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+/**
+ * This class Creates a visible contact that displays important contact
+ * information
+ * 
+ * @author samgoldberg
+ *
+ */
 public class ContactShallow extends Pane {
 	private Contact person;
 	private Image star;
-
 
 	private ImageView starImage = new ImageView();
 	private HBox h;
@@ -36,10 +43,16 @@ public class ContactShallow extends Pane {
 	private Label name;
 	private Label phoneNumber;
 	private Label dob;
-	private Image filledStar = new Image(getClass().getResource("goldStarFilled.png").toExternalForm());
-	private Image unfilledStar = new Image(getClass().getResource("starUnfilled.png").toExternalForm());
+	private Image filledStar = new Image(getClass().getResource("pictures/goldStarFilled.png").toExternalForm());
+	private Image unfilledStar = new Image(getClass().getResource("pictures/starUnfilled.png").toExternalForm());
 	private StarHandler change;
-	
+
+	/**
+	 * An argument constructor of ContactShallow that takes the contact to be
+	 * created as an argument
+	 * 
+	 * @param p
+	 */
 	public ContactShallow(Contact p) {
 		person = p;
 //create orderPane layout
@@ -48,19 +61,20 @@ public class ContactShallow extends Pane {
 		v = new VBox();
 //insert profile picture into layout
 		try {
-		picture = new Image(person.getPhotoURL());
-		}catch (IllegalArgumentException e) {
+			picture = new Image(person.getPhotoURL());
+		} catch (IllegalArgumentException e) {
 			person.setPhotoURL("defaultPic.png");
 			picture = new Image(person.getPhotoURL());
-			
+
 		}
+		//create the profile picture to display
 		profilePic = new ImageView(picture);
 		profilePic.setFitWidth(100);
 		profilePic.setPreserveRatio(true);
 		profilePic.setSmooth(true);
 		profilePic.setCache(true);
 		v.getChildren().add(profilePic);
-
+//display name phone number and dob
 		name = new Label("Name: " + person.getName());
 		phoneNumber = new Label("Phone: " + person.getPhoneNumber());
 		dob = new Label("Date of Birth: " + person.getDob());
@@ -163,9 +177,22 @@ public class ContactShallow extends Pane {
 		this.dob = dob;
 	}
 
+	/**
+	 * This handler is activated when the user clicks on star and changes the
+	 * "closeFriend" field of the contact and changes how the star looks
+	 * 
+	 * @author Sam Goldberg
+	 *
+	 */
 	private class StarHandler implements EventHandler<MouseEvent> {
 		ImageView star;
 
+		/**
+		 * An argument constructor of StarHandler that takes the star image as an
+		 * argument
+		 * 
+		 * @param star - the star image to be changed
+		 */
 		public StarHandler(ImageView star) {
 			this.star = star;
 		}
